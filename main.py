@@ -19,11 +19,17 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    #initiate player object
+    #set variable
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
-    player = Player(x, y)
 
+    #Creating Group of class to be update
+    updateable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    #Create container then create PLAYER object
+    Player.containers = (updateable, drawable)
+    player = Player(x, y)
 
     #game loop
     while(True):
@@ -35,12 +41,15 @@ def main():
             if event.type == pygame.QUIT:
                 return 
         
-        #calls update 
-        player.update(dt)
+        #calls update on group
+        updateable.update(dt)
+
+
 
         # Clear the screen, render stuff, etc.
         screen.fill((0,0,0))
-        player.draw(screen)
+        for thing in drawable:
+            thing.draw(screen)
         pygame.display.flip()
         
 
