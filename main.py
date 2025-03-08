@@ -27,15 +27,21 @@ def main():
 
     #game loop
     while(True):
+        #limit frame rate to 60fps
+        dt = clock.tick(60) / 1000
+
+        # Handle events (e.g., quitting the game)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return 
+        
+        #calls update 
+        player.update(dt)
+
+        # Clear the screen, render stuff, etc.
         screen.fill((0,0,0))
         player.draw(screen)
         pygame.display.flip()
-
-        #limit frame rate to 60fps
-        dt = clock.tick(60) / 1000
         
 
 
