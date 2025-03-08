@@ -4,6 +4,9 @@
 import pygame
 from constants import *
 from player import *
+from asteroid import *
+from asteroidfield import *
+import sys
 
 def main():
 
@@ -26,10 +29,17 @@ def main():
     #Creating Group of class to be update
     updateable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
-    #Create container then create PLAYER object
+
+    #Create container then create  object
     Player.containers = (updateable, drawable)
+    Shot.containers = (shots, updateable, drawable)
+    Asteroid.containers = (asteroids, updateable, drawable)
+    AsteroidField.containers = (updateable)
     player = Player(x, y)
+    asteroid_field = AsteroidField()
 
     #game loop
     while(True):
@@ -40,9 +50,19 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return 
-        
+
         #calls update on group
         updateable.update(dt)
+
+        for asteroid in asteroids:
+            if asteroid.collision_dectect(player):
+                print("Game over!")
+                sys.exit()
+
+            for bullet in shots:
+                if asteroid.collision_dectect(bullet):
+                    bullet.kill()
+                    asteroid.split()
 
 
 
